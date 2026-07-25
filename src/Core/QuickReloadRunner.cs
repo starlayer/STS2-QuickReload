@@ -88,6 +88,7 @@ static class QuickReloadRunner
             SfxCmd.Play(runState.Players[0].Character.CharacterTransitionSfx);
             game.ReactionContainer.InitializeNetworking((INetGameService)new NetSingleplayerGameService());
             await game.LoadRun(runState, serializableRun.PreFinishedRoom);
+            await game.Transition.FadeIn(0.3f);
         }
         catch (Exception ex)
         {
