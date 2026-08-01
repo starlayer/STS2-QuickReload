@@ -94,7 +94,7 @@ static class AutoReadyPatch
         // All three load screens use an internal _runLobby; if unavailable, do not block auto-ready.
         if (runLobby == null) return true;
 
-        return runLobby.Run.Players.All(player => runLobby.ConnectedPlayerIds.Contains(player.NetId));
+        return runLobby.Run.Players.All(player => runLobby.PlayerIds.Contains(player.NetId));
     }
 
     private static LoadRunLobby? GetRunLobby(object screen)
