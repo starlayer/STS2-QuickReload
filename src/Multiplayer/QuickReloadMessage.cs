@@ -4,9 +4,7 @@ using MegaCrit.Sts2.Core.Multiplayer.Transport;
 
 namespace QuickReload.Multiplayer;
 
-public struct QuickReloadMessage :
-    INetMessage,
-    IPacketSerializable
+public struct QuickReloadMessage : INetMessage, IPacketSerializable
 {
     public ulong playerId;
 
@@ -25,7 +23,7 @@ public struct QuickReloadMessage :
 
     public void Deserialize(PacketReader reader)
     {
-        this.playerId = reader.ReadULong();
+        playerId = reader.ReadULong();
     }
 
     public override readonly string ToString()

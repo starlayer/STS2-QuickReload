@@ -17,8 +17,7 @@ static class QuickReloadNetworkPatch
             Log.Info("[QUICKRELOAD]: Not a multiplayer run, skipping QuickReload message handler registration.");
             return;
         }
-        __instance.NetService.RegisterMessageHandler<QuickReloadMessage>(
-            new MessageHandlerDelegate<QuickReloadMessage>(OnQuickReloadMessage));
+        __instance.NetService.RegisterMessageHandler(new MessageHandlerDelegate<QuickReloadMessage>(OnQuickReloadMessage));
         Log.Info($"[QUICKRELOAD]: Registered QuickReloadMessage handler on {__instance.NetService.Type}.");
     }
 

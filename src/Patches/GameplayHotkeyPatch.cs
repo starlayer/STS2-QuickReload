@@ -23,10 +23,7 @@ static class GameplayHotkeyPatch
             return;
         }
 
-        if (_f5WasPressed)
-        {
-            return;
-        }
+        if (_f5WasPressed) return;
         _f5WasPressed = true;
 
         if (NGame.Instance?.Transition?.InTransition == true)

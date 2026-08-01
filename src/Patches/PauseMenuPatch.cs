@@ -40,13 +40,8 @@ static class QuickReloadPauseMenuPatch
         }
 
         var saveAndQuitButton = buttonContainer.GetNode<NPauseMenuButton>("SaveAndQuit");
-        var restartButton = saveAndQuitButton.Duplicate((int)(
-            Node.DuplicateFlags.Groups |
-            Node.DuplicateFlags.Scripts |
-            Node.DuplicateFlags.UseInstantiation
-        )) as NPauseMenuButton;
 
-        if (restartButton == null)
+        if (saveAndQuitButton.Duplicate((int)(Node.DuplicateFlags.Groups | Node.DuplicateFlags.Scripts | Node.DuplicateFlags.UseInstantiation)) is not NPauseMenuButton restartButton)
         {
             Log.Warn("[QUICKRELOAD]: Quick Restart: failed to duplicate template button.");
             return;
@@ -62,10 +57,7 @@ static class QuickReloadPauseMenuPatch
 
         ConnectFocusNeighbors(buttonContainer, restartButton);
 
-        restartButton.Connect(
-            NClickableControl.SignalName.Released,
-            Callable.From<NButton>(_ => OnQuickReloadPressed(__instance))
-        );
+        restartButton.Connect(NClickableControl.SignalName.Released, Callable.From<NButton>(_ => OnQuickReloadPressed(__instance)));
 
         Log.Info("[QUICKRELOAD]: Quick Restart button added.");
     }
@@ -76,9 +68,7 @@ static class QuickReloadPauseMenuPatch
         foreach (var button in buttonContainer.GetChildren())
         {
             if (button is NPauseMenuButton { Visible: true } pauseMenuButton)
-            {
                 buttons.Add(pauseMenuButton);
-            }
         }
 
         var index = buttons.IndexOf(restartButton);
@@ -101,15 +91,11 @@ static class QuickReloadPauseMenuPatch
     {
         var image = button.GetNodeOrNull<TextureRect>("ButtonImage");
         if (image?.Material != null)
-        {
             image.Material = image.Material.Duplicate() as Material;
-        }
 
         var label = button.GetNodeOrNull<CanvasItem>("Label");
         if (label?.Material != null)
-        {
             label.Material = label.Material.Duplicate() as Material;
-        }
     }
 
     private static void OnQuickReloadPressed(NPauseMenu pauseMenu)
@@ -125,12 +111,9 @@ static class CloseToMenuPatch
     static void Prefix(NPauseMenu __instance)
     {
         var restartButton = __instance.GetNodeOrNull<VBoxContainer>(QuickReloadPauseMenuPatch.ButtonContainerPath)
-                ?.GetNodeOrNull<NPauseMenuButton>(QuickReloadPauseMenuPatch.QuickReloadNodeName);
+                            ?.GetNodeOrNull<NPauseMenuButton>(QuickReloadPauseMenuPatch.QuickReloadNodeName);
 
-        if (restartButton == null || !GodotObject.IsInstanceValid(restartButton))
-        {
-            return;
-        }
+        if (restartButton == null || !GodotObject.IsInstanceValid(restartButton)) return;
 
         restartButton.Disable();
     }

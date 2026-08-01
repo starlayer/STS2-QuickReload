@@ -29,9 +29,7 @@ static class QuickReloadRunner
         {
             Log.Info("[QUICKRELOAD]: Single player run detected, restarting.");
             if (pauseMenu != null)
-            {
                 DisablePauseMenuButtons(pauseMenu);
-            }
             bool ret = await RestartSinglePlayer();
             if (ret && pauseMenu != null)
             {
@@ -43,9 +41,7 @@ static class QuickReloadRunner
         {
             Log.Info("[QUICKRELOAD]: Multiplayer run detected, restarting.");
             if (pauseMenu != null)
-            {
                 DisablePauseMenuButtons(pauseMenu);
-            }
             bool ret = await RestartMultiPlayer();
             if (ret && pauseMenu != null)
             {
@@ -64,8 +60,7 @@ static class QuickReloadRunner
         try
         {
             ReadSaveResult<SerializableRun>? readRunSaveResult = SaveManager.Instance.LoadRunSave();
-            serializableRun = readRunSaveResult.SaveData
-                              ?? throw new InvalidOperationException("[QUICKRELOAD]: Run save data was null.");
+            serializableRun = readRunSaveResult.SaveData ?? throw new InvalidOperationException("[QUICKRELOAD]: Run save data was null.");
             runState = RunState.FromSerializable(serializableRun);
         }
         catch (Exception ex)
@@ -74,8 +69,7 @@ static class QuickReloadRunner
             return true;
         }
 
-        var game = NGame.Instance ??
-                   throw new InvalidOperationException("NGame.Instance was null during quick restart.");
+        var game = NGame.Instance ?? throw new InvalidOperationException("NGame.Instance was null during quick restart.");
 
         var runMusicController = NRunMusicController.Instance;
         runMusicController?.StopMusic();
@@ -100,8 +94,7 @@ static class QuickReloadRunner
 
     private static async Task<bool> RestartMultiPlayer()
     {
-        var game = NGame.Instance ??
-                   throw new InvalidOperationException("[QUICKRELOAD]: NGame.Instance was null during quick restart.");
+        var game = NGame.Instance ?? throw new InvalidOperationException("[QUICKRELOAD]: NGame.Instance was null during quick restart.");
 
         var netService = RunManager.Instance.NetService;
         if (netService is { IsConnected: true })
@@ -112,9 +105,7 @@ static class QuickReloadRunner
             Log.Info($"[QUICKRELOAD]: Sent QuickReloadMessage before cleanup. playerId={playerId}");
         }
         else
-        {
             Log.Warn("[QUICKRELOAD]: Net service not connected before cleanup, skipping QuickReloadMessage.");
-        }
 
         await game.Transition.FadeOut(0.3f);
         RunManager.Instance.CleanUp();
@@ -137,8 +128,7 @@ static class QuickReloadRunner
         var localPlayerId = PlatformUtil.GetLocalPlayerId(platformType);
 
         // from NMultiplayerSubmenu
-        ReadSaveResult<SerializableRun> readSaveResult =
-            SaveManager.Instance.LoadAndCanonicalizeMultiplayerRunSave(localPlayerId);
+        ReadSaveResult<SerializableRun> readSaveResult = SaveManager.Instance.LoadAndCanonicalizeMultiplayerRunSave(localPlayerId);
         if (!readSaveResult.Success || readSaveResult.SaveData == null)
         {
             Log.Warn("[QUICKRELOAD]: Broken multiplayer run save detected, big problem");
@@ -186,13 +176,9 @@ static class QuickReloadRunner
             if (button is NPauseMenuButton pauseMenuButton)
             {
                 if (enabled)
-                {
                     pauseMenuButton.Enable();
-                }
                 else
-                {
                     pauseMenuButton.Disable();
-                }
             }
         }
     }

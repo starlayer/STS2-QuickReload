@@ -17,8 +17,7 @@ static class AutoReadyPatch
 {
     static IEnumerable<MethodBase> TargetMethods()
     {
-        yield return AccessTools.Method(typeof(NMultiplayerLoadGameScreen),
-            nameof(NMultiplayerLoadGameScreen.OnSubmenuOpened));
+        yield return AccessTools.Method(typeof(NMultiplayerLoadGameScreen), nameof(NMultiplayerLoadGameScreen.OnSubmenuOpened));
 
         if (!QuickReloadUtil.IsMobilePlatform())
         {
@@ -93,10 +92,7 @@ static class AutoReadyPatch
     private static bool AreAllLobbyPlayersConnected(LoadRunLobby? runLobby)
     {
         // All three load screens use an internal _runLobby; if unavailable, do not block auto-ready.
-        if (runLobby == null)
-        {
-            return true;
-        }
+        if (runLobby == null) return true;
 
         return runLobby.Run.Players.All(player => runLobby.ConnectedPlayerIds.Contains(player.NetId));
     }

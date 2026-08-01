@@ -2,7 +2,7 @@ namespace QuickReload;
 
 internal static class QuickReloadState
 {
-    private static readonly object Sync = new();
+    private static readonly Lock Sync = new();
 
     private static bool _pendingRestart;
     private static ulong _pendingPlayerId;
@@ -50,10 +50,7 @@ internal static class QuickReloadState
     {
         lock (Sync)
         {
-            if (!_pendingAutoReady)
-            {
-                return false;
-            }
+            if (!_pendingAutoReady) return false;
 
             _pendingAutoReady = false;
             return true;
@@ -91,10 +88,7 @@ internal static class QuickReloadState
     {
         lock (Sync)
         {
-            if (!_pendingRunStartupNetGuard)
-            {
-                return false;
-            }
+            if (!_pendingRunStartupNetGuard) return false;
 
             _pendingRunStartupNetGuard = false;
             _runStartupNetGuardActive = true;

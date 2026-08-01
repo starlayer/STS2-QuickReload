@@ -15,21 +15,17 @@ static class RunStartupNetGuardBeginRunPatch
     {
         var screenTypes = QuickReloadUtil.IsMobilePlatform()
             ? new[] { typeof(NMultiplayerLoadGameScreen) }
-            : new[] { typeof(NMultiplayerLoadGameScreen), typeof(NDailyRunLoadScreen), typeof(NCustomRunLoadScreen) };
+            : [typeof(NMultiplayerLoadGameScreen), typeof(NDailyRunLoadScreen), typeof(NCustomRunLoadScreen)];
 
         foreach (var screenType in screenTypes)
-        {
             yield return AccessTools.Method(screenType, nameof(NMultiplayerLoadGameScreen.BeginRun));
-        }
     }
 
     [HarmonyPrefix]
     static void Prefix()
     {
         if (QuickReloadState.TryArmRunStartupNetGuard())
-        {
             Log.Info("[QUICKRELOAD]: Armed load-screen net update guard for quick reload startup.");
-        }
     }
 }
 
@@ -40,12 +36,10 @@ static class RunStartupNetGuardProcessPatch
     {
         var screenTypes = QuickReloadUtil.IsMobilePlatform()
             ? new[] { typeof(NMultiplayerLoadGameScreen) }
-            : new[] { typeof(NMultiplayerLoadGameScreen), typeof(NDailyRunLoadScreen), typeof(NCustomRunLoadScreen) };
+            : [typeof(NMultiplayerLoadGameScreen), typeof(NDailyRunLoadScreen), typeof(NCustomRunLoadScreen)];
 
         foreach (var screenType in screenTypes)
-        {
             yield return AccessTools.Method(screenType, nameof(NMultiplayerLoadGameScreen._Process));
-        }
     }
 
     [HarmonyPrefix]
@@ -62,12 +56,10 @@ static class RunStartupNetGuardSubmenuClosedPatch
     {
         var screenTypes = QuickReloadUtil.IsMobilePlatform()
             ? new[] { typeof(NMultiplayerLoadGameScreen) }
-            : new[] { typeof(NMultiplayerLoadGameScreen), typeof(NDailyRunLoadScreen), typeof(NCustomRunLoadScreen) };
+            : [typeof(NMultiplayerLoadGameScreen), typeof(NDailyRunLoadScreen), typeof(NCustomRunLoadScreen)];
 
         foreach (var screenType in screenTypes)
-        {
             yield return AccessTools.Method(screenType, nameof(NMultiplayerLoadGameScreen.OnSubmenuClosed));
-        }
     }
 
     [HarmonyPrefix]
@@ -96,10 +88,7 @@ static class RunStartupNetGuardRunManagerPatch
 
     private static void TryClearGuard(string source)
     {
-        if (!QuickReloadState.IsRunStartupNetGuardActive())
-        {
-            return;
-        }
+        if (!QuickReloadState.IsRunStartupNetGuardActive()) return;
 
         QuickReloadState.ClearRunStartupNetGuard();
         Log.Info($"[QUICKRELOAD]: Cleared load-screen net update guard after {source}.");
